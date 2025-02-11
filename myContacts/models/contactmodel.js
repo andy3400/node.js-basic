@@ -1,17 +1,16 @@
 const mongoose = require('mongoose');
 
-const schema =  mongoose.createSchema({
+const contactschema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        unique: true
     },
     email: {
         type: String,
     },
     phone: {
         type: String,
-        required: [true, "please, enter your phone number"]
+        required: [true, "비밀번호를 입력해주세요."]
     }
 },
 {
@@ -20,6 +19,6 @@ const schema =  mongoose.createSchema({
 
 // 스키마 -> 모델
 // mongoose.model("모델명", "스키마명")
-const contact = mongoose.model('Contact', schema);
+const Contact = mongoose.model('Contact', contactschema);
 
-module.exports = contact;
+module.exports = Contact;
