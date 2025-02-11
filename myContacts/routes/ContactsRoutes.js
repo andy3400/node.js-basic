@@ -1,24 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const {getAllContacts, createContract } = require('../controllers/connectController');
 
-const app = express();
-app.use(express.json());
-app.use(express.urlencoded({exteneded:true}));
+router
+    .route('/')
+    .get(getAllContacts)
+    .post(createContract);
 
-router.route('/contacts')
-    .get((req, res) => {
-        res.send('Hello World!!!!!')})
-    .post((req, res) => {
-        console.log(req.body);
-        // 구조 분해 할당 구문
-        const {name , age, address} = req.body;
-        if(!name || !age || !address){
-            return res.send("please enter the value")
-        }
-
-        res.send('POST request received')});
-
-router.route(`/contacts/:id`)
+router.route(`/:id`)
     .get((req, res) => {
         res.send(`${req.params.id} is the first contacts`)})
     .put((req, res) => {
