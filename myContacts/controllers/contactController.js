@@ -3,12 +3,7 @@ const Contact = require('../models/contactmodel');
 
 const getAllContacts = asyncHandler ( async (req, res) => {
     const contacts = await Contact.find();
-    const users = [
-        {name: 'John', email: 'john@example.com', phone: '010-1234-5678'},
-        {name: 'Alice', email: 'alice@example.com', phone: '010-9876-5432'},
-        {name: 'Bob', email: 'bob@example.com', phone: '010-4567-8901'},
-    ]
-    res.render('getAll', {users : users});
+    res.render('index', {contacts : contacts});
 
 });
 
