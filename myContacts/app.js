@@ -1,27 +1,40 @@
 const express = require('express');
 const dbConnect = require('./config/dbConnect');
+const methodOverride = require('method-override');
 const app = express();
 
-dbConnect();
+// Set view engine and views directory
+app.set("view engine", "ejs");
+app.set("views", "./views");
 
-app.set("view engine", "ejs")
-app.set("views", "./views")
-
-// 정적 파일 제공
+// Static files middleware
 app.use(express.static("./public"));
 
-// JSON 및 URL-encoded 데이터 파싱 미들웨어를 먼저 등록
+// Use method-override for supporting PUT and DELETE methods in forms
+app.use(methodOverride("_method"));
+
+// JSON and URL-encoded data parsing middleware
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
-// 기본 라우트
-app.get('/', (req, res) => {
-    res.send('Welcome to the Home Page!');
-});
+// Connect to the database
+dbConnect();
 
-// 라우트 설정
+// Routes
 app.use("/contacts", require('./routes/ContactsRoutes'));
 
+// Handle 404 errors
+app.use((req, res, next) => {
+  res.status(404).send("Page not found");
+});
+
+// Handle server errors
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).send("Server error");
+});
+
+// Start the server
 app.listen(3000, () => {
-    console.log('Server is running on port 3000');
+  console.log('Server is running on port 3000');
 });
